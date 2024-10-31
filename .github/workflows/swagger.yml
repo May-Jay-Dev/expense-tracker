@@ -9,6 +9,11 @@ jobs:
   deploy:
     runs-on: ubuntu-latest
     steps:
+      - uses: actions/checkout@v4
+        with:
+          sparse-checkout: |
+            openapi.yml
+          sparse-checkout-cone-mode: false
       - name: Generate Swagger UI
         uses: Legion2/swagger-ui-action@v1
         with:
