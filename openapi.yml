@@ -37,7 +37,7 @@ components:
     Trip:
       type: object
       properties:
-        trip_id: 
+        trip_id:
           type: string
           readOnly: true
           example: "0000-0000-0000-0000-0000"
@@ -60,7 +60,7 @@ components:
           type: integer
           readOnly: true
           example: 0
-        name: 
+        name:
           type: string
           example: John Doe
         budget:
@@ -115,7 +115,7 @@ components:
         category:
           type: object
           description: Breakdown by category
-          additionalProperties: 
+          additionalProperties:
             type: number
             minimum: 1
             example: 1
@@ -123,6 +123,12 @@ components:
           type: array
           items:
             $ref: "#/components/schemas/DailySummary"
+    Error:
+      type: object
+      properties:
+        message:
+          type: string
+          description: Error message from errors
 
 paths:
   /trips:
@@ -148,11 +154,11 @@ paths:
           schema:
             $ref: "#/components/schemas/PageSize"
       responses:
-        '200':
+        "200":
           description: A list of trips
           content:
             application/json:
-              schema: 
+              schema:
                 type: object
                 properties:
                   trips:
@@ -166,6 +172,12 @@ paths:
                     $ref: "#/components/schemas/PageNo"
                   page_size:
                     $ref: "#/components/schemas/PageSize"
+        "401":
+          description: Unauthorized error code if user has not logged in
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
 
     post:
       tags:
@@ -178,9 +190,9 @@ paths:
             schema:
               $ref: "#/components/schemas/Trip"
       responses:
-        '201':
+        "201":
           description: Trip created successfully
-          content: 
+          content:
             application/json:
               schema:
                 type: object
@@ -188,6 +200,12 @@ paths:
                   trip_id:
                     type: string
                     description: Trip ID for trip identification
+        "401":
+          description: Unauthorized error code if user has not logged in
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
 
   /trips/{trip_id}:
     get:
@@ -201,14 +219,25 @@ paths:
           schema:
             type: string
       responses:
-        '200':
+        "200":
           description: Trip details
           content:
             application/json:
               schema:
                 $ref: "#/components/schemas/Trip"
+        "401":
+          description: Unauthorized error code if user has not logged in
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+        "404":
+          description: Trip is not found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
 
-                    
     put:
       tags:
         - Trips
@@ -234,8 +263,20 @@ paths:
                 end_date:
                   $ref: "#/components/schemas/Date"
       responses:
-        '200':
+        "200":
           description: Trip updated successfully
+        "401":
+          description: Unauthorized error code if user has not logged in
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+        "404":
+          description: Trip is not found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
     delete:
       tags:
         - Trips
@@ -247,8 +288,20 @@ paths:
           schema:
             type: string
       responses:
-        '204':
+        "204":
           description: Trip deleted successfully
+        "401":
+          description: Unauthorized error code if user has not logged in
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+        "404":
+          description: Trip is not found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
 
   /trips/{trip_id}/expenses:
     get:
@@ -272,7 +325,7 @@ paths:
           schema:
             $ref: "#/components/schemas/PageSize"
       responses:
-        '200':
+        "200":
           description: A list of expenses for the trip
           content:
             application/json:
@@ -280,6 +333,12 @@ paths:
                 type: array
                 items:
                   $ref: "#/components/schemas/Expense"
+        "401":
+          description: Unauthorized error code if user has not logged in
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
     post:
       tags:
         - Expenses
@@ -297,8 +356,14 @@ paths:
             schema:
               $ref: "#/components/schemas/Expense"
       responses:
-        '201':
+        "201":
           description: Expense created successfully
+        "401":
+          description: Unauthorized error code if user has not logged in
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
 
   /trips/{trip_id}/expenses/{expenseId}:
     get:
@@ -317,12 +382,24 @@ paths:
           schema:
             type: string
       responses:
-        '200':
+        "200":
           description: Expense details
           content:
             application/json:
               schema:
                 $ref: "#/components/schemas/Expense"
+        "401":
+          description: Unauthorized error code if user has not logged in
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+        "404":
+          description: Expense is not found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
     put:
       tags:
         - Expenses
@@ -345,8 +422,20 @@ paths:
             schema:
               $ref: "#/components/schemas/Expense"
       responses:
-        '200':
+        "200":
           description: Expense updated successfully
+        "401":
+          description: Unauthorized error code if user has not logged in
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+        "404":
+          description: Expense is not found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
     delete:
       tags:
         - Expenses
@@ -363,8 +452,20 @@ paths:
           schema:
             type: string
       responses:
-        '204':
+        "204":
           description: Expense deleted successfully
+        "401":
+          description: Unauthorized error code if user has not logged in
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+        "404":
+          description: Expense is not found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
 
   /trips/{trip_id}/persons:
     get:
@@ -378,7 +479,7 @@ paths:
           schema:
             type: string
       responses:
-        '200':
+        "200":
           description: A list of persons for the trip
           content:
             application/json:
@@ -386,6 +487,12 @@ paths:
                 type: array
                 items:
                   $ref: "#/components/schemas/Person"
+        "401":
+          description: Unauthorized error code if user has not logged in
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
     post:
       tags:
         - Persons
@@ -403,8 +510,14 @@ paths:
             schema:
               $ref: "#/components/schemas/Person"
       responses:
-        '201':
+        "201":
           description: Person created successfully
+        "401":
+          description: Unauthorized error code if user has not logged in
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
 
   /trips/{trip_id}/persons/{personId}:
     get:
@@ -423,8 +536,20 @@ paths:
           schema:
             type: string
       responses:
-        '200':
+        "200":
           description: Person details
+        "401":
+          description: Unauthorized error code if user has not logged in
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+        "404":
+          description: Expense is not found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
     put:
       tags:
         - Persons
@@ -447,8 +572,20 @@ paths:
             schema:
               $ref: "#/components/schemas/Person"
       responses:
-        '200':
+        "200":
           description: Person updated successfully
+        "401":
+          description: Unauthorized error code if user has not logged in
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+        "404":
+          description: Expense is not found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
     delete:
       tags:
         - Persons
@@ -465,8 +602,20 @@ paths:
           schema:
             type: string
       responses:
-        '204':
+        "204":
           description: Person deleted successfully
+        "401":
+          description: Unauthorized error code if user has not logged in
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+        "404":
+          description: Expense is not found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
 
   /auth/login:
     post:
@@ -487,12 +636,16 @@ paths:
                   type: string
                   example: password
       responses:
-        '200':
+        "200":
           description: Login successful
-        '401':
-          description: Invalid credentials
+        "401":
+          description: Invalid credentials (Either email/password is incorrect)
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
 
-  /auth/signup:
+  /auth/register:
     post:
       tags:
         - Auth
@@ -511,20 +664,26 @@ paths:
                 email:
                   type: string
       responses:
-        '201':
+        "201":
           description: Signup successful
-        '400':
-          description: Invalid input
+        "400":
+          description: Error signing up (Email is taken/Invalid email/Password strength too weaks)
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
 
   /auth/logout:
     post:
       tags:
-       - Auth
+        - Auth
       summary: Log Out
       responses:
-        '200':
+        "200":
           description: Logout Success
-        '400':
+        "401":
           description: User not logged in
-
-      
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
